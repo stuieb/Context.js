@@ -13,7 +13,8 @@ var context = context || (function () {
 		},
 		above: 'auto',
 		preventDoubleContext: true,
-		compress: false
+		compress: false,
+		click: 'right'
 	};
 
 	function initialize(opts) {
@@ -89,15 +90,23 @@ var context = context || (function () {
 	}
 
 	function addContext(selector, data) {
-
+		
+		var events='';
 		var d = new Date(),
 			id = d.getTime(),
 			$menu = buildMenu(data, id);
 
 		$('body').append($menu);
 
+	        if(options.click == 'left'){
+	            events = 'click';
+	        }else if(options.click=='both'){
+	            events = "click contextmenu";
+	        }else{
+	            events = 'contextmenu';
+	        }
 
-		$(document).on('contextmenu', selector, function (e) {
+		$(document).on(events, selector, function (e) {
 			e.preventDefault();
 			e.stopPropagation();
 
